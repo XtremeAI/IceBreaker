@@ -12,10 +12,12 @@ public class Ball : MonoBehaviour {
 
 	bool _ballLaunched = false;
 	Vector2 _vectorOffsetBallPaddle;
+	AudioSource ballKnockSound;
 
 	// Use this for initialization
 	void Start () {
 		_vectorOffsetBallPaddle = transform.position - _gamePaddle.transform.position;
+		ballKnockSound = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -32,5 +34,9 @@ public class Ball : MonoBehaviour {
 			);
 			transform.position = paddlePosition + _vectorOffsetBallPaddle;
 		}
+	}
+
+	private void OnCollisionEnter2D(Collision2D other) {
+		ballKnockSound.Play();
 	}
 }
