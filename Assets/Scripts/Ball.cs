@@ -37,6 +37,11 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter2D(Collision2D other) {
-		ballKnockSound.Play();
+		if (_ballLaunched) {
+			Debug.Log("Fired!");
+			ballKnockSound.Play();
+		}
+
+
 	}
 }
