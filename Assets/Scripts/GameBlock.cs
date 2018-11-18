@@ -7,10 +7,12 @@ public class GameBlock : MonoBehaviour {
 	[SerializeField] AudioClip blockBreadSound;
 
 	Level _level; 
+	GameState _gameState;
 
 	private void Start() {
 		_level = FindObjectOfType<Level>();
-
+		_gameState = FindObjectOfType<GameState>();
+		
 		_level.AddABreakableBlock();
 	}
 
@@ -18,5 +20,6 @@ public class GameBlock : MonoBehaviour {
 		AudioSource.PlayClipAtPoint(blockBreadSound, Camera.main.transform.position);
 		Destroy(gameObject);
 		_level.RemoveBreakableBlock();
+		_gameState.ScoreBlock();
 	}
 }

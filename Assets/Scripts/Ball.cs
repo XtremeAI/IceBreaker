@@ -42,6 +42,16 @@ public class Ball : MonoBehaviour {
 			ballKnockSound.Play();
 		}
 
+		if (other.gameObject.name == "Paddle") {
+			Debug.Log(other.contacts[0].point);
 
+			PolygonCollider2D paddleCollider = (PolygonCollider2D)other.collider;
+			
+			Vector2[] colPoints = paddleCollider.points;
+
+			foreach (Vector2 point in colPoints) {
+				Debug.Log(other.transform.TransformPoint(point));
+			}
+		}
 	}
 }
