@@ -54,5 +54,5 @@ MonoBehaviour:
   _gameSpeed: 1
   _scoreTotal: 0
   _scorePerBlock: 5
-  _scoreText: {fileID: 114888843786163510, guid: b72be40311121c1458acc379fd9dd17f,
-    type: 2}
+  _scoreText: {fileID: 0}
+  _isAutoPlayEnabled: 0

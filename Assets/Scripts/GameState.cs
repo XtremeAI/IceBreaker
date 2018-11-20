@@ -5,13 +5,28 @@ using UnityEngine.UI;
 
 public class GameState : MonoBehaviour {
 
-	[Range(0.5f,10f)][SerializeField] float _gameSpeed = 1f;
-	[SerializeField] int _scoreTotal = 0;
-	[SerializeField] int _scorePerBlock = 5;
+	private static GameState _instance;
+
+	public static GameState Instance {get { return _instance;} }
+
+	private void Awake() {
+		if (_instance != this && _instance != null) {
+			Destroy(this.gameObject);
+		} else {
+			_instance = this;
+			DontDestroyOnLoad(this.gameObject);
+		}
+	}
+
+	[Range(0.5f,10f)][SerializeField] float _gameSpeed;
+	[SerializeField] int _scoreTotal;
+	[SerializeField] int _scorePerBlock;
 
 	[SerializeField] Text _scoreText;
 
-	private void Start() {
+  [SerializeField] bool _isAutoPlayEnabled;
+
+  private void Start() {
 		_scoreText.text = _scoreTotal.ToString();
 	}	
 	// Update is called once per frame
@@ -22,5 +37,9 @@ public class GameState : MonoBehaviour {
 	public void ScoreBlock(){
 		_scoreTotal += _scorePerBlock;
 		_scoreText.text = _scoreTotal.ToString();
+	}
+
+	public bool IsAutoPlayEnabled() { 
+		 return _isAutoPlayEnabled;
 	}
 }

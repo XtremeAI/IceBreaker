@@ -23,7 +23,7 @@ public class GameBlock : MonoBehaviour {
   private void CountBreakableBlocks()
   {
     _level = FindObjectOfType<Level>();
-    _gameState = FindObjectOfType<GameState>();
+    _gameState = GameState.Instance;
 
     if (tag == "Breakable")
     {
