@@ -11,4 +11,10 @@ public class SceneLoader : MonoBehaviour {
 		int sceneIdxToLoad = (currentSceneIdx + 1) % totalScenesInBuildSequence;
 		SceneManager.LoadScene(sceneIdxToLoad);
 	}
+
+	public void LoadFirstScene() {
+		GameState gameState = FindObjectOfType<GameState>();
+		Destroy(gameState.gameObject);
+		LoadNextScene();
+	}
 }
