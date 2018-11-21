@@ -12,6 +12,7 @@ public class GameOver : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_gameState = GameState.Instance;
+		_gameState.DestroyScoreText();
 		_finalScoreTxtField.text = _gameState.GetTotalScore();
 	}
 }

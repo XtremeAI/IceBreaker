@@ -47,4 +47,8 @@ public class GameState : MonoBehaviour {
   {
     return _scoreTotal.ToString();
   }
+
+	public void DestroyScoreText() {
+		Destroy(_scoreText.gameObject);
+	}
 }
