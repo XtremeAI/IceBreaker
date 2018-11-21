@@ -42,6 +42,8 @@ public class Ball : MonoBehaviour {
 			);
 			transform.position = paddlePosition + _vectorOffsetBallPaddle;
 		}
+
+		_lastVelocityVector = _ballRigidBodyComponent.velocity;
 	}
 
 	private void OnCollisionEnter2D(Collision2D other) {
@@ -50,17 +52,55 @@ public class Ball : MonoBehaviour {
 			ballKnockSound.Play();
 		}
 
-		// if (other.gameObject.name == "Paddle") {
-		// 	Debug.Log(other.contacts[0].point);
+		if (other.gameObject.name == "Paddle") {
 
-		// 	PolygonCollider2D paddleCollider = (PolygonCollider2D)other.collider;
+			Vector2 contactPoint = other.GetContact(0).point;
+
+			// Debug.Log("Contact point:     " + contactPoint);
+
+			Vector2 colliderPosition = other.transform.TransformPoint(other.collider.offset);
 			
-		// 	Vector2[] colPoints = paddleCollider.points;
+			// Debug.Log("Collider position: " + colliderPosition);
 
-		// 	foreach (Vector2 point in colPoints) {
-		// 		Debug.Log(other.transform.TransformPoint(point));
-		// 	}
-		// }
+			BoxCollider2D paddleCollider = (BoxCollider2D)other.collider;
+
+			float paddleLength = paddleCollider.size.x;
+
+			float collisionOffset = (contactPoint.x - colliderPosition.x) / paddleLength;
+
+			// Debug.Log("Collision offset:  " + (collisionOffset * 100) + "%");
+
+			Vector2 currentVelocity = _lastVelocityVector;
+
+			// Debug.Log("Current velocity:  " + currentVelocity);
+
+			Vector2 currentNormal = other.GetContact(0).normal;
+
+			if (currentNormal.y == 1f) {
+
+				// Debug.Log("Need adjustment!");
+
+				// Debug.Log("Current direction:  " + currentVelocity.normalized);
+
+				float currentSpeed = currentVelocity.magnitude;
+				// Debug.Log("Current speed:      " + currentSpeed);
+
+				// Debug.Log("Current normal:     " + currentNormal);
+
+				Vector2 adjustedNormal = new Vector2(collisionOffset, currentNormal.y).normalized;
+				// Debug.Log("Adjusted normal:    " + adjustedNormal);
+
+				Vector2 adjustedDirection = Vector2.Reflect(currentVelocity.normalized, adjustedNormal);
+				// Debug.Log("Adjusted direction: " + adjustedDirection);
+
+				Vector2 adjustedVelocity = adjustedDirection * currentSpeed;
+				// Debug.Log("Adjusted velocity:  " + adjustedVelocity);
+
+				// Debug.Log("Adjusted speed:     " + adjustedVelocity.magnitude);
+
+				_ballRigidBodyComponent.velocity = adjustedVelocity;
+			}
+		}
 	}
 
 	private void OnCollisionExit2D(Collision2D other) {
@@ -69,11 +109,12 @@ public class Ball : MonoBehaviour {
 
   private void PeventInfiniteLoops()
   {
-		Debug.Log("Last Velocity:" + _lastVelocityVector);
+		// Debug.Log("Last Velocity:" + _lastVelocityVector);
 		Vector2 currentVelVec = _ballRigidBodyComponent.velocity; 
-		Debug.Log("Current Velocity:" + currentVelVec);
+		// Debug.Log("Current Velocity:" + currentVelVec);
     Vector2 resultantVector = currentVelVec + _lastVelocityVector;
 		if (resultantVector == Vector2.zero) {
+			Debug.Log("Prevent Infinite Loop logic processed!");
 			bool isXhigherThanY = Math.Abs(currentVelVec.x) > Math.Abs(currentVelVec.y) ? true : false;
 			float deviationValue = isXhigherThanY ? currentVelVec.x * 0.05f : currentVelVec.y * 0.05f;
 			Vector2 deviationVelVec = isXhigherThanY 
@@ -81,7 +122,7 @@ public class Ball : MonoBehaviour {
 				: new Vector2(+deviationValue, -deviationValue);
 			_ballRigidBodyComponent.velocity += deviationVelVec;
 		}
-		Debug.Log("New Velocity:" + _ballRigidBodyComponent.velocity);
+		// Debug.Log("New Velocity:" + _ballRigidBodyComponent.velocity);
 		_lastVelocityVector = _ballRigidBodyComponent.velocity;
   }
 }

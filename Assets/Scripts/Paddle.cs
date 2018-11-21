@@ -12,10 +12,11 @@ public class Paddle : MonoBehaviour {
 		// Use this for initialization
 	void Start () {
 		_viewSizeH = Camera.main.orthographicSize / Screen.height * Screen.width * 2;
-		Debug.Log("Camera.main.orthographicSize: " + Camera.main.orthographicSize);
-		Debug.Log("Screen.height" + Screen.height);
-		Debug.Log("Screen.width" + Screen.width);
-		Debug.Log("_viewSizeH" + _viewSizeH);
+		// Debug.Log("Camera.main.orthographicSize: " + Camera.main.orthographicSize);
+		// Debug.Log("Screen.height: " + Screen.height);
+		// Debug.Log("Screen.width: " + Screen.width);
+		// Debug.Log("_viewSizeH: " + _viewSizeH);
+		// Debug.Log("");
 		_gameState = GameState.Instance;
 		_ball = FindObjectOfType<Ball>();
 	}
